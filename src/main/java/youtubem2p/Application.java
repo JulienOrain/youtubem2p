@@ -1,17 +1,17 @@
 package youtubem2p;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import static org.quartz.CronScheduleBuilder.cronSchedule;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
 
-import javax.mail.MessagingException;
+import org.quartz.CronTrigger;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.impl.StdSchedulerFactory;
 
-import com.google.api.services.gmail.model.Message;
-
-import youtubem2p.gmail.GmailIdEnum;
-import youtubem2p.gmail.GmailServiceFacade;
-import youtubem2p.youtube.YoutubePlaylistIdEnum;
-import youtubem2p.youtube.YoutubeServiceFacade;
+import youtubem2p.job.JobM2P;
 
 /**
  * Main Application
@@ -24,36 +24,23 @@ public class Application {
 	/** Application name. */
 	public static final String APPLICATION_NAME = "Youtube Mail To Playlist";
 
-	/** Main method */
-	public static void main(final String[] args) throws IOException, MessagingException {
+	/**
+	 * Main method
+	 */
+	public static void main(final String[] args) throws SchedulerException {
 
-		// Utilisateur gmail : tiegezh musique
-		final String userId = GmailIdEnum.GMAIL_TIEGEZH_MUSIQUE.getId();
+		final SchedulerFactory sf = new StdSchedulerFactory();
+		final Scheduler sched = sf.getScheduler();
 
-		// Création des facades
-		final GmailServiceFacade gmailServiceFacade = new GmailServiceFacade();
-		final YoutubeServiceFacade youtubeServiceFacade = new YoutubeServiceFacade();
+		final JobDetail job = newJob(JobM2P.class).withIdentity("job-youtubeM2P", "group-youtubeM2P").build();
 
-		// Récupération des messages
-		final List<Message> messages = gmailServiceFacade.listMessages(userId);
-		for (final Message message : messages) {
-			// Récupération de l'id du message
-			final String messageId = message.getId();
+		// Job #1 is scheduled to run every 20 seconds
+		final CronTrigger trigger = newTrigger().withIdentity("trigger-youtubeM2P", "group-youtubeM2P")
+				.withSchedule(cronSchedule("0/20 * * * * ?")).build();
 
-			// Récupération de l'id de la vidéo
-			final List<Optional<String>> optVideoIds = gmailServiceFacade.getVideoIds(userId, messageId);
-
-			for (final Optional<String> optVideoId : optVideoIds) {
-				if (optVideoId.isPresent()) {
-					// Ajout de la vidéo à la playlist
-					youtubeServiceFacade.insertVideoIntoPlaylist(optVideoId.get(),
-							YoutubePlaylistIdEnum.PLAYLIST_JULIEN.getId());
-					// Marque le mail comme lu
-					gmailServiceFacade.markAsRead(userId, messageId);
-				}
-			}
-
-		}
+		// Tell quartz to schedule the job using our trigger
+		sched.scheduleJob(job, trigger);
+		sched.start();
 	}
 
 }
