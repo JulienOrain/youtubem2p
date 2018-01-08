@@ -1,4 +1,4 @@
-package youtubem2p.gmail;
+package youtubemtop.gmail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 
-import youtubem2p.Application;
+import youtubemtop.Application;
 
 /**
  * Factory for Gmail

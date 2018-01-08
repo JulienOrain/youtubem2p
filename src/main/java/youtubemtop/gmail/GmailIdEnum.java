@@ -1,4 +1,4 @@
-package youtubem2p.gmail;
+package youtubemtop.gmail;
 
 /**
  * Enum of gmail ids

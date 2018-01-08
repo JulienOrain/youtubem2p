@@ -1,4 +1,4 @@
-package youtubem2p;
+package youtubemtop;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
@@ -11,7 +11,7 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
-import youtubem2p.job.JobM2P;
+import youtubemtop.job.JobM2P;
 
 /**
  * Main Application

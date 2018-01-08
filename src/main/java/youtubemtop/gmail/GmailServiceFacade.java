@@ -1,4 +1,4 @@
-package youtubem2p.gmail;
+package youtubemtop.gmail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.ModifyMessageRequest;
 
-import youtubem2p.gmail.util.MailParser;
+import youtubemtop.gmail.util.MailParser;
 
 /**
  * Facade for Gmail
