@@ -95,33 +95,6 @@ public class GmailServiceFacade {
 	}
 
 	/**
-	 * Get a Message and use it to create a MimeMessage.
-	 *
-	 * @param userId
-	 *            user's id
-	 * @param messageId
-	 *            message's id
-	 * @return MimeMessage MimeMessage populated from retrieved Message
-	 * @throws IOException
-	 *             IOException
-	 * @throws MessagingException
-	 *             MessagingException
-	 */
-	@SuppressWarnings("static-access")
-	public MimeMessage getMimeMessage(final String userId, final String messageId)
-			throws IOException, MessagingException {
-		final Message message = gmail.users().messages().get(userId, messageId).setFormat("raw").execute();
-
-		final Base64 base64Url = new Base64(true);
-		final byte[] emailBytes = base64Url.decodeBase64(message.getRaw());
-
-		final Properties props = new Properties();
-		final Session session = Session.getDefaultInstance(props, null);
-
-		return new MimeMessage(session, new ByteArrayInputStream(emailBytes));
-	}
-
-	/**
 	 * Mark a Message as read by removing the unread label
 	 *
 	 * @param userId
@@ -155,6 +128,33 @@ public class GmailServiceFacade {
 	public List<Optional<String>> getVideoIds(final String userId, final String messageId)
 			throws MessagingException, IOException {
 		return mailReader.getVideoIds(getMimeMessage(userId, messageId));
+	}
+
+	/**
+	 * Get a Message and use it to create a MimeMessage.
+	 *
+	 * @param userId
+	 *            user's id
+	 * @param messageId
+	 *            message's id
+	 * @return MimeMessage MimeMessage populated from retrieved Message
+	 * @throws IOException
+	 *             IOException
+	 * @throws MessagingException
+	 *             MessagingException
+	 */
+	@SuppressWarnings("static-access")
+	private MimeMessage getMimeMessage(final String userId, final String messageId)
+			throws IOException, MessagingException {
+		final Message message = gmail.users().messages().get(userId, messageId).setFormat("raw").execute();
+
+		final Base64 base64Url = new Base64(true);
+		final byte[] emailBytes = base64Url.decodeBase64(message.getRaw());
+
+		final Properties props = new Properties();
+		final Session session = Session.getDefaultInstance(props, null);
+
+		return new MimeMessage(session, new ByteArrayInputStream(emailBytes));
 	}
 
 }

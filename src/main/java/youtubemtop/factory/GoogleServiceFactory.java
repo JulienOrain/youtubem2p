@@ -38,6 +38,7 @@ public abstract class GoogleServiceFactory {
 	/** Global instance of the JSON factory. */
 	protected static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
+	/** Scopes */
 	private List<String> scopes;
 
 	/**
