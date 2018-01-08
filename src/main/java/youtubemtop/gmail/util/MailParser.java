@@ -74,7 +74,7 @@ public class MailParser {
 	 *            link
 	 * @return youtube video's id
 	 */
-	Optional<String> getVideoId(final String link) {
+	private Optional<String> getVideoId(final String link) {
 		String res = null;
 		final String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?$]*";
 		final Pattern compiledPattern = Pattern.compile(pattern);
@@ -119,7 +119,7 @@ public class MailParser {
 	 * @throws IOException
 	 *             IOException
 	 */
-	String getTextFromMessage(final MimeMessage mimeMessage) throws MessagingException, IOException {
+	private String getTextFromMessage(final MimeMessage mimeMessage) throws MessagingException, IOException {
 		String result = "";
 		if (mimeMessage.isMimeType("text/plain")) {
 			result = mimeMessage.getContent().toString();

@@ -33,13 +33,14 @@ public class GmailServiceFacade {
 	/** Label unread */
 	private static final String UNREAD = "UNREAD";
 
+	/** Instance */
+	private static GmailServiceFacade instance = null;
+
 	/** Service Gmail */
 	private final Gmail gmail;
 
 	/** Mail Reader */
 	private final MailParser mailReader;
-
-	private static GmailServiceFacade instance = null;
 
 	/**
 	 * Get Instance of {@link GmailServiceFacade} singleton

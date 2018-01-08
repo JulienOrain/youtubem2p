@@ -14,9 +14,12 @@ import com.google.api.services.youtube.model.ResourceId;
  *
  */
 public class YoutubeServiceFacade {
-	private final YouTube youtube;
 
+	/** Instance */
 	private static YoutubeServiceFacade instance = null;
+
+	/** Service Youtube */
+	private final YouTube youtube;
 
 	/**
 	 * Get Instance of {@link YoutubeServiceFacade} singleton
