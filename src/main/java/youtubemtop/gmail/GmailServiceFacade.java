@@ -34,10 +34,10 @@ public class GmailServiceFacade {
 	private static final String UNREAD = "UNREAD";
 
 	/** Service Gmail */
-	private static Gmail gmail;
+	private final Gmail gmail;
 
 	/** Mail Reader */
-	private static MailParser mailReader;
+	private final MailParser mailReader;
 
 	private static GmailServiceFacade instance = null;
 
@@ -61,9 +61,9 @@ public class GmailServiceFacade {
 	 * @throws IOException
 	 *             IOException
 	 */
-	private GmailServiceFacade() throws IOException {
+	public GmailServiceFacade() throws IOException {
 		super();
-		gmail = GmailServiceFactory.getGmailService();
+		gmail = (Gmail) new GmailServiceFactory().getService();
 		mailReader = new MailParser();
 	}
 

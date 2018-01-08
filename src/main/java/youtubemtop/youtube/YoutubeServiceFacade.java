@@ -40,7 +40,7 @@ public class YoutubeServiceFacade {
 	 */
 	public YoutubeServiceFacade() throws IOException {
 		super();
-		youtube = YoutubeServiceFactory.getYouTubeService();
+		youtube = (YouTube) new YoutubeServiceFactory().getService();
 	}
 
 	/**
