@@ -16,6 +16,22 @@ import com.google.api.services.youtube.model.ResourceId;
 public class YoutubeServiceFacade {
 	private static YouTube youtube;
 
+	private static YoutubeServiceFacade instance = null;
+
+	/**
+	 * Get Instance of {@link YoutubeServiceFacade} singleton
+	 *
+	 * @return instance of {@link YoutubeServiceFacade}
+	 * @throws IOException
+	 *             IOException
+	 */
+	public static YoutubeServiceFacade getInstance() throws IOException {
+		if (instance == null) {
+			instance = new YoutubeServiceFacade();
+		}
+		return instance;
+	}
+
 	/**
 	 * Constructor
 	 *

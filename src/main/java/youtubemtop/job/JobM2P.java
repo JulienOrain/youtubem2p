@@ -25,9 +25,8 @@ public class JobM2P implements org.quartz.Job {
 			final String userId = GmailIdEnum.GMAIL_TIEGEZH_MUSIQUE.getId();
 
 			// Création des facades
-			final GmailServiceFacade gmailServiceFacade = new GmailServiceFacade();
-
-			final YoutubeServiceFacade youtubeServiceFacade = new YoutubeServiceFacade();
+			final GmailServiceFacade gmailServiceFacade = GmailServiceFacade.getInstance();
+			final YoutubeServiceFacade youtubeServiceFacade = YoutubeServiceFacade.getInstance();
 
 			// Récupération des messages
 			final List<Message> messages = gmailServiceFacade.listMessages(userId);

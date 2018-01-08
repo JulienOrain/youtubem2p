@@ -39,13 +39,29 @@ public class GmailServiceFacade {
 	/** Mail Reader */
 	private static MailParser mailReader;
 
+	private static GmailServiceFacade instance = null;
+
+	/**
+	 * Get Instance of {@link GmailServiceFacade} singleton
+	 *
+	 * @return instance of {@link GmailServiceFacade}
+	 * @throws IOException
+	 *             IOException
+	 */
+	public static GmailServiceFacade getInstance() throws IOException {
+		if (instance == null) {
+			instance = new GmailServiceFacade();
+		}
+		return instance;
+	}
+
 	/**
 	 * Constructor
 	 *
 	 * @throws IOException
 	 *             IOException
 	 */
-	public GmailServiceFacade() throws IOException {
+	private GmailServiceFacade() throws IOException {
 		super();
 		gmail = GmailServiceFactory.getGmailService();
 		mailReader = new MailParser();
