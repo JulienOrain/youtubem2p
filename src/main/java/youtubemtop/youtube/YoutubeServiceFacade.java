@@ -14,7 +14,7 @@ import com.google.api.services.youtube.model.ResourceId;
  *
  */
 public class YoutubeServiceFacade {
-	private static YouTube youtube;
+	private final YouTube youtube;
 
 	private static YoutubeServiceFacade instance = null;
 

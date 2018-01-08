@@ -74,9 +74,7 @@ public abstract class GoogleServiceFactory {
 		// Build flow and trigger user authorization request.
 		final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY,
 				clientSecrets, scopes).setDataStoreFactory(dataStoreFactory).setAccessType("offline").build();
-		final Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver())
-				.authorize("user");
-		return credential;
+		return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
 	}
 
 	/**
