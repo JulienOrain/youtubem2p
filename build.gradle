@@ -19,7 +19,6 @@ apply plugin: 'org.sonarqube'
 
 group = 'youtubem2p'
 version = '0.0.1-SNAPSHOT'
-mainClassName = 'Application'
 sourceCompatibility = 1.8
 
 repositories {
