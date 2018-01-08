@@ -8,6 +8,8 @@ import javax.mail.MessagingException;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.api.services.gmail.model.Message;
 
@@ -17,6 +19,9 @@ import youtubemtop.youtube.YoutubePlaylistIdEnum;
 import youtubemtop.youtube.YoutubeServiceFacade;
 
 public class JobM2P implements org.quartz.Job {
+
+	/** Logger */
+	private static final Logger LOGGER = LoggerFactory.getLogger(JobM2P.class);
 
 	@Override
 	public void execute(final JobExecutionContext context) throws JobExecutionException {
@@ -47,12 +52,9 @@ public class JobM2P implements org.quartz.Job {
 					}
 				}
 			}
-		} catch (final MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (final IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (final MessagingException | IOException e) {
+			LOGGER.error("Error", e);
+			System.exit(1);
 		}
 	}
 

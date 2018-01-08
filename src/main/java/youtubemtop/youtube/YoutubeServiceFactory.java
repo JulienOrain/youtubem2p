@@ -49,7 +49,7 @@ public class YoutubeServiceFactory extends GoogleServiceFactory {
 	@Override
 	public AbstractGoogleJsonClient getService() throws IOException {
 		final Credential credential = authorize();
-		return new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+		return new YouTube.Builder(httpTransport, JSON_FACTORY, credential)
 				.setApplicationName(Application.APPLICATION_NAME).build();
 	}
 

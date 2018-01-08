@@ -117,9 +117,7 @@ public class GmailServiceFacade {
 		final Properties props = new Properties();
 		final Session session = Session.getDefaultInstance(props, null);
 
-		final MimeMessage email = new MimeMessage(session, new ByteArrayInputStream(emailBytes));
-
-		return email;
+		return new MimeMessage(session, new ByteArrayInputStream(emailBytes));
 	}
 
 	/**

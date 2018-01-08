@@ -142,21 +142,21 @@ public class MailParser {
 	 *             IOException
 	 */
 	private String getTextFromMimeMultipart(final MimeMultipart mimeMultipart) throws MessagingException, IOException {
-		String result = "";
+		final StringBuilder stringBuilder = new StringBuilder();
 		final int count = mimeMultipart.getCount();
 		for (int i = 0; i < count; i++) {
 			final BodyPart bodyPart = mimeMultipart.getBodyPart(i);
 			if (bodyPart.isMimeType("text/plain")) {
-				result = result + "\n" + bodyPart.getContent();
+				stringBuilder.append("\n" + bodyPart.getContent());
 				break; // without break same text appears twice in my tests
 			} else if (bodyPart.isMimeType("text/html")) {
 				final String html = (String) bodyPart.getContent();
-				result = result + "\n" + org.jsoup.Jsoup.parse(html).text();
+				stringBuilder.append("\n" + org.jsoup.Jsoup.parse(html).text());
 			} else if (bodyPart.getContent() instanceof MimeMultipart) {
-				result = result + getTextFromMimeMultipart((MimeMultipart) bodyPart.getContent());
+				stringBuilder.append(getTextFromMimeMultipart((MimeMultipart) bodyPart.getContent()));
 			}
 		}
-		return result;
+		return stringBuilder.toString();
 	}
 
 }

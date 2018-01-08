@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -22,11 +26,14 @@ import youtubemtop.Application;
 
 public abstract class GoogleServiceFactory {
 
+	/** Logger */
+	private static final Logger LOGGER = LoggerFactory.getLogger(GoogleServiceFactory.class);
+
 	/** Global instance of the {@link FileDataStoreFactory}. */
-	private static FileDataStoreFactory DATA_STORE_FACTORY;
+	private FileDataStoreFactory dataStoreFactory;
 
 	/** Global instance of the HTTP transport. */
-	protected static HttpTransport HTTP_TRANSPORT;
+	protected HttpTransport httpTransport;
 
 	/** Global instance of the JSON factory. */
 	protected static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -44,11 +51,11 @@ public abstract class GoogleServiceFactory {
 	public GoogleServiceFactory(final File dataStorDir, final List<String> scopes) {
 		super();
 		try {
-			HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-			DATA_STORE_FACTORY = new FileDataStoreFactory(dataStorDir);
+			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+			dataStoreFactory = new FileDataStoreFactory(dataStorDir);
 			this.scopes = scopes;
-		} catch (final Throwable t) {
-			t.printStackTrace();
+		} catch (final IOException | GeneralSecurityException e) {
+			LOGGER.error("Error", e);
 			System.exit(1);
 		}
 	}
@@ -65,12 +72,19 @@ public abstract class GoogleServiceFactory {
 		final GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
 		// Build flow and trigger user authorization request.
-		final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-				clientSecrets, scopes).setDataStoreFactory(DATA_STORE_FACTORY).setAccessType("offline").build();
+		final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY,
+				clientSecrets, scopes).setDataStoreFactory(dataStoreFactory).setAccessType("offline").build();
 		final Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver())
 				.authorize("user");
 		return credential;
 	}
 
+	/**
+	 * Get the underlayered service
+	 *
+	 * @return tje underlayered service
+	 * @throws IOException
+	 *             IOException
+	 */
 	public abstract AbstractGoogleJsonClient getService() throws IOException;
 }
