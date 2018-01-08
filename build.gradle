@@ -10,6 +10,10 @@ repositories {
     mavenCentral()
 }
 
+plugins {
+    id "org.sonarqube" version "2.5"
+}  
+
 dependencies {
     compile 'com.google.api-client:google-api-client:1.23.0'
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
@@ -28,6 +32,3 @@ dependencies {
     
 }
 
-plugins {
-    id "org.sonarqube" version "2.5"
-}  
