@@ -8,6 +8,7 @@ import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.ResourceId;
 
 import youtubemtop.checker.ParameterChecker;
+import youtubemtop.checker.ParameterIdEnum;
 import youtubemtop.exception.MissingParameterException;
 
 /**
@@ -46,8 +47,8 @@ public class YoutubeServiceFacade {
 	 */
 	public void insertVideoIntoPlaylist(final String videoId, final String playlistId)
 			throws MissingParameterException, IOException {
-		ParameterChecker.checkString("videoId", videoId);
-		ParameterChecker.checkString("playlistId", playlistId);
+		ParameterChecker.checkString(ParameterIdEnum.VIDEO_ID, videoId);
+		ParameterChecker.checkString(ParameterIdEnum.PLAYLIST_ID, playlistId);
 
 		// Appel au service d'insertion
 		youtube.playlistItems().insert("snippet", buildPlaylistItem(videoId, playlistId)).execute();

@@ -18,6 +18,7 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.ModifyMessageRequest;
 
 import youtubemtop.checker.ParameterChecker;
+import youtubemtop.checker.ParameterIdEnum;
 import youtubemtop.exception.MissingParameterException;
 import youtubemtop.gmail.util.MailParser;
 
@@ -31,9 +32,6 @@ public class GmailServiceFacade {
 
 	/** Search Query for emails */
 	private static final String QUERY = "ziq is:unread";
-
-	/** Label unread */
-	private static final String UNREAD = "UNREAD";
 
 	/** Service Gmail */
 	private final Gmail gmail;
@@ -65,7 +63,7 @@ public class GmailServiceFacade {
 	 *             IOException
 	 */
 	public List<Message> listMessages(final String userId) throws MissingParameterException, IOException {
-		ParameterChecker.checkString("userId", userId);
+		ParameterChecker.checkString(ParameterIdEnum.USER_ID, userId);
 
 		ListMessagesResponse response = gmail.users().messages().list(userId).setQ(QUERY).execute();
 
@@ -97,11 +95,11 @@ public class GmailServiceFacade {
 	 */
 
 	public void markAsRead(final String userId, final String messageId) throws MissingParameterException, IOException {
-		ParameterChecker.checkString("userId", userId);
-		ParameterChecker.checkString("messageId", messageId);
+		ParameterChecker.checkString(ParameterIdEnum.USER_ID, userId);
+		ParameterChecker.checkString(ParameterIdEnum.MESSAGE_ID, messageId);
 
 		final List<String> removeLabelIds = new ArrayList<>();
-		removeLabelIds.add(UNREAD);
+		removeLabelIds.add(GmailLabelEnum.UNREAD.getId());
 		final ModifyMessageRequest mods = new ModifyMessageRequest().setRemoveLabelIds(removeLabelIds);
 		gmail.users().messages().modify(userId, messageId, mods).execute();
 	}
@@ -123,8 +121,8 @@ public class GmailServiceFacade {
 	 */
 	public List<Optional<String>> getVideoIds(final String userId, final String messageId)
 			throws MessagingException, MissingParameterException, IOException {
-		ParameterChecker.checkString("userId", userId);
-		ParameterChecker.checkString("messageId", messageId);
+		ParameterChecker.checkString(ParameterIdEnum.USER_ID, userId);
+		ParameterChecker.checkString(ParameterIdEnum.MESSAGE_ID, messageId);
 
 		return mailReader.getVideoIds(getMimeMessage(userId, messageId));
 	}

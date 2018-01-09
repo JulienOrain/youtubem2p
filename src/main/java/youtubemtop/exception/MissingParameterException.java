@@ -1,5 +1,7 @@
 package youtubemtop.exception;
 
+import youtubemtop.checker.ParameterIdEnum;
+
 /**
  * Exception for missing parameters
  *
@@ -17,7 +19,7 @@ public class MissingParameterException extends Exception {
 	 * @param parameterName
 	 *            parameter's name
 	 */
-	public MissingParameterException(final String parameterName) {
+	public MissingParameterException(final ParameterIdEnum parameterName) {
 		super(buildMessage(parameterName));
 
 	}
@@ -29,9 +31,9 @@ public class MissingParameterException extends Exception {
 	 *            parameter's name
 	 * @return exception's message
 	 */
-	private static String buildMessage(final String parameterName) {
+	private static String buildMessage(final ParameterIdEnum parameterName) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("Parameter : ").append(parameterName).append(" is missing.");
+		builder.append("Parameter : ").append(parameterName.getId()).append(" is missing.");
 		return builder.toString();
 	}
 }

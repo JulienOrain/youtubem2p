@@ -18,7 +18,7 @@ public class ParameterCheckerTest {
 	@Test
 	public void testParamValueNull() {
 		// Inits
-		final String paramName = "paramName";
+		final ParameterIdEnum paramName = ParameterIdEnum.USER_ID;
 		final String paramValue = null;
 		// Test
 		try {
@@ -27,7 +27,7 @@ public class ParameterCheckerTest {
 			fail("Exception not thrown");
 		} catch (final MissingParameterException e) {
 			// Asserts
-			assertEquals("Parameter : paramName is missing.", e.getMessage());
+			assertEquals("Parameter : " + paramName.getId() + " is missing.", e.getMessage());
 		}
 	}
 
@@ -37,7 +37,7 @@ public class ParameterCheckerTest {
 	@Test
 	public void test() {
 		// Inits
-		final String paramName = "paramName";
+		final ParameterIdEnum paramName = ParameterIdEnum.USER_ID;
 		final String paramValue = "paramValue";
 		// Test
 		try {

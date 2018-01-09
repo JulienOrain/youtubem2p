@@ -13,6 +13,13 @@ import youtubemtop.exception.MissingParameterException;
 public class ParameterChecker {
 
 	/**
+	 * Constructor
+	 */
+	private ParameterChecker() {
+		super();
+	}
+
+	/**
 	 * Check if the string parameter is not null or empty
 	 *
 	 * @param paramName
@@ -22,7 +29,8 @@ public class ParameterChecker {
 	 * @throws MissingParameterException
 	 *             MissingParameterException
 	 */
-	public static void checkString(final String paramName, final String paramValue) throws MissingParameterException {
+	public static void checkString(final ParameterIdEnum paramName, final String paramValue)
+			throws MissingParameterException {
 		if (Strings.isNullOrEmpty(paramValue)) {
 			throw new MissingParameterException(paramName);
 		}
