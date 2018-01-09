@@ -9,7 +9,6 @@ import com.google.api.services.youtube.model.ResourceId;
 
 import youtubemtop.checker.ParameterChecker;
 import youtubemtop.checker.ParameterIdEnum;
-import youtubemtop.exception.MissingParameterException;
 
 /**
  * Facade for Youtube
@@ -40,13 +39,10 @@ public class YoutubeServiceFacade {
 	 *            video's id
 	 * @param playlistId
 	 *            playlist's id
-	 * @throws MissingParameterException
-	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
-	public void insertVideoIntoPlaylist(final String videoId, final String playlistId)
-			throws MissingParameterException, IOException {
+	public void insertVideoIntoPlaylist(final String videoId, final String playlistId) throws IOException {
 		ParameterChecker.checkString(ParameterIdEnum.VIDEO_ID, videoId);
 		ParameterChecker.checkString(ParameterIdEnum.PLAYLIST_ID, playlistId);
 

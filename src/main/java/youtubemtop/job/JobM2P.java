@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.api.services.gmail.model.Message;
 
-import youtubemtop.exception.MissingParameterException;
 import youtubemtop.gmail.GmailIdEnum;
 import youtubemtop.gmail.GmailServiceFacade;
 import youtubemtop.youtube.YoutubePlaylistIdEnum;
@@ -53,7 +52,7 @@ public class JobM2P implements org.quartz.Job {
 					}
 				}
 			}
-		} catch (final MessagingException | MissingParameterException | IOException e) {
+		} catch (final MessagingException | IOException e) {
 			LOGGER.error("Error", e);
 			System.exit(1);
 		}

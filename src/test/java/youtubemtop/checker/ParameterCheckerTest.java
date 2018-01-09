@@ -7,8 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import youtubemtop.exception.MissingParameterException;
-
 @RunWith(MockitoJUnitRunner.class)
 public class ParameterCheckerTest {
 
@@ -25,7 +23,7 @@ public class ParameterCheckerTest {
 			ParameterChecker.checkString(paramName, paramValue);
 			// Fail
 			fail("Exception not thrown");
-		} catch (final MissingParameterException e) {
+		} catch (final IllegalArgumentException e) {
 			// Asserts
 			assertEquals("Parameter : " + paramName.getId() + " is missing.", e.getMessage());
 		}
@@ -42,7 +40,7 @@ public class ParameterCheckerTest {
 		// Test
 		try {
 			ParameterChecker.checkString(paramName, paramValue);
-		} catch (final MissingParameterException e) {
+		} catch (final IllegalArgumentException e) {
 			// Fail
 			fail("Exception should not have been thrown");
 		}

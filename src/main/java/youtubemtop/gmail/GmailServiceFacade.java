@@ -19,7 +19,6 @@ import com.google.api.services.gmail.model.ModifyMessageRequest;
 
 import youtubemtop.checker.ParameterChecker;
 import youtubemtop.checker.ParameterIdEnum;
-import youtubemtop.exception.MissingParameterException;
 import youtubemtop.gmail.util.MailParser;
 
 /**
@@ -57,12 +56,10 @@ public class GmailServiceFacade {
 	 * @param userId
 	 *            user's id
 	 * @return user's messages
-	 * @throws MissingParameterException
-	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
-	public List<Message> listMessages(final String userId) throws MissingParameterException, IOException {
+	public List<Message> listMessages(final String userId) throws IOException {
 		ParameterChecker.checkString(ParameterIdEnum.USER_ID, userId);
 
 		ListMessagesResponse response = gmail.users().messages().list(userId).setQ(QUERY).execute();
@@ -88,13 +85,11 @@ public class GmailServiceFacade {
 	 *            user's id
 	 * @param messageId
 	 *            message's id
-	 * @throws MissingParameterException
-	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
 
-	public void markAsRead(final String userId, final String messageId) throws MissingParameterException, IOException {
+	public void markAsRead(final String userId, final String messageId) throws IOException {
 		ParameterChecker.checkString(ParameterIdEnum.USER_ID, userId);
 		ParameterChecker.checkString(ParameterIdEnum.MESSAGE_ID, messageId);
 
@@ -114,13 +109,11 @@ public class GmailServiceFacade {
 	 * @return video'ids
 	 * @throws MessagingException
 	 *             MessagingException
-	 * @throws MissingParameterException
-	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
 	public List<Optional<String>> getVideoIds(final String userId, final String messageId)
-			throws MessagingException, MissingParameterException, IOException {
+			throws MessagingException, IOException {
 		ParameterChecker.checkString(ParameterIdEnum.USER_ID, userId);
 		ParameterChecker.checkString(ParameterIdEnum.MESSAGE_ID, messageId);
 

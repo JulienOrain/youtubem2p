@@ -1,8 +1,7 @@
 package youtubemtop.checker;
 
+import com.google.api.client.util.Preconditions;
 import com.google.api.client.util.Strings;
-
-import youtubemtop.exception.MissingParameterException;
 
 /**
  * Checker for missing parameters
@@ -26,14 +25,10 @@ public class ParameterChecker {
 	 *            parameter's name
 	 * @param paramValue
 	 *            parameter's value
-	 * @throws MissingParameterException
-	 *             MissingParameterException
 	 */
-	public static void checkString(final ParameterIdEnum paramName, final String paramValue)
-			throws MissingParameterException {
-		if (Strings.isNullOrEmpty(paramValue)) {
-			throw new MissingParameterException(paramName);
-		}
+	public static void checkString(final ParameterIdEnum paramName, final String paramValue) {
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(paramValue),
+				"Parameter : " + paramName.getId() + " is missing.");
 	}
 
 }
