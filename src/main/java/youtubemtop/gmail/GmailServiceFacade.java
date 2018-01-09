@@ -17,6 +17,8 @@ import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.ModifyMessageRequest;
 
+import youtubemtop.checker.ParameterChecker;
+import youtubemtop.exception.MissingParameterException;
 import youtubemtop.gmail.util.MailParser;
 
 /**
@@ -33,28 +35,11 @@ public class GmailServiceFacade {
 	/** Label unread */
 	private static final String UNREAD = "UNREAD";
 
-	/** Instance */
-	private static GmailServiceFacade instance = null;
-
 	/** Service Gmail */
 	private final Gmail gmail;
 
 	/** Mail Reader */
 	private final MailParser mailReader;
-
-	/**
-	 * Get Instance of {@link GmailServiceFacade} singleton
-	 *
-	 * @return instance of {@link GmailServiceFacade}
-	 * @throws IOException
-	 *             IOException
-	 */
-	public static GmailServiceFacade getInstance() throws IOException {
-		if (instance == null) {
-			instance = new GmailServiceFacade();
-		}
-		return instance;
-	}
 
 	/**
 	 * Constructor
@@ -74,10 +59,14 @@ public class GmailServiceFacade {
 	 * @param userId
 	 *            user's id
 	 * @return user's messages
+	 * @throws MissingParameterException
+	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
-	public List<Message> listMessages(final String userId) throws IOException {
+	public List<Message> listMessages(final String userId) throws MissingParameterException, IOException {
+		ParameterChecker.checkString("userId", userId);
+
 		ListMessagesResponse response = gmail.users().messages().list(userId).setQ(QUERY).execute();
 
 		final List<Message> messages = new ArrayList<>();
@@ -101,11 +90,16 @@ public class GmailServiceFacade {
 	 *            user's id
 	 * @param messageId
 	 *            message's id
+	 * @throws MissingParameterException
+	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
 
-	public void markAsRead(final String userId, final String messageId) throws IOException {
+	public void markAsRead(final String userId, final String messageId) throws MissingParameterException, IOException {
+		ParameterChecker.checkString("userId", userId);
+		ParameterChecker.checkString("messageId", messageId);
+
 		final List<String> removeLabelIds = new ArrayList<>();
 		removeLabelIds.add(UNREAD);
 		final ModifyMessageRequest mods = new ModifyMessageRequest().setRemoveLabelIds(removeLabelIds);
@@ -122,11 +116,16 @@ public class GmailServiceFacade {
 	 * @return video'ids
 	 * @throws MessagingException
 	 *             MessagingException
+	 * @throws MissingParameterException
+	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
 	public List<Optional<String>> getVideoIds(final String userId, final String messageId)
-			throws MessagingException, IOException {
+			throws MessagingException, MissingParameterException, IOException {
+		ParameterChecker.checkString("userId", userId);
+		ParameterChecker.checkString("messageId", messageId);
+
 		return mailReader.getVideoIds(getMimeMessage(userId, messageId));
 	}
 

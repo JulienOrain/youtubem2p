@@ -7,6 +7,9 @@ import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemSnippet;
 import com.google.api.services.youtube.model.ResourceId;
 
+import youtubemtop.checker.ParameterChecker;
+import youtubemtop.exception.MissingParameterException;
+
 /**
  * Facade for Youtube
  *
@@ -15,25 +18,8 @@ import com.google.api.services.youtube.model.ResourceId;
  */
 public class YoutubeServiceFacade {
 
-	/** Instance */
-	private static YoutubeServiceFacade instance = null;
-
 	/** Service Youtube */
 	private final YouTube youtube;
-
-	/**
-	 * Get Instance of {@link YoutubeServiceFacade} singleton
-	 *
-	 * @return instance of {@link YoutubeServiceFacade}
-	 * @throws IOException
-	 *             IOException
-	 */
-	public static YoutubeServiceFacade getInstance() throws IOException {
-		if (instance == null) {
-			instance = new YoutubeServiceFacade();
-		}
-		return instance;
-	}
 
 	/**
 	 * Constructor
@@ -53,20 +39,18 @@ public class YoutubeServiceFacade {
 	 *            video's id
 	 * @param playlistId
 	 *            playlist's id
+	 * @throws MissingParameterException
+	 *             MissingParameterException
 	 * @throws IOException
 	 *             IOException
 	 */
-	public void insertVideoIntoPlaylist(final String videoId, final String playlistId) throws IOException {
-
-		// Création de l'item à ajouter à la playlist
-		final PlaylistItem playlistItem = buildPlaylistItem(videoId, playlistId);
+	public void insertVideoIntoPlaylist(final String videoId, final String playlistId)
+			throws MissingParameterException, IOException {
+		ParameterChecker.checkString("videoId", videoId);
+		ParameterChecker.checkString("playlistId", playlistId);
 
 		// Appel au service d'insertion
-		final YouTube.PlaylistItems.Insert playlistItemsInsertRequest = youtube.playlistItems().insert("snippet",
-				playlistItem);
-
-		// Execution de la requete
-		playlistItemsInsertRequest.execute();
+		youtube.playlistItems().insert("snippet", buildPlaylistItem(videoId, playlistId)).execute();
 
 	}
 
